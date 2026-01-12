@@ -27,14 +27,16 @@ const CATEGORIES: { id: FunctionCategory; icon: React.ReactNode }[] = [
 
 export const Sidebar: React.FC<SidebarProps> = ({ activeId, onSelect }) => {
   const [searchQuery, setSearchQuery] = useState('');
+  const MAX_SEARCH_LENGTH = 100; // 限制搜索输入最大长度
 
   // 过滤函数列表
   const filteredFunctions = useMemo(() => {
-    if (!searchQuery.trim()) {
+    const trimmedQuery = searchQuery.trim();
+    if (!trimmedQuery) {
       return FUNCTIONS;
     }
 
-    const query = searchQuery.toLowerCase();
+    const query = trimmedQuery.toLowerCase();
     return FUNCTIONS.filter(
       (func) =>
         func.name.toLowerCase().includes(query) ||
@@ -42,6 +44,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeId, onSelect }) => {
         func.description.toLowerCase().includes(query)
     );
   }, [searchQuery]);
+
+  // 处理搜索输入变化，限制长度
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (value.length <= MAX_SEARCH_LENGTH) {
+      setSearchQuery(value);
+    }
+  };
 
   // 按类别组织过滤后的函数
   const categorizedFunctions = useMemo(() => {
@@ -76,18 +86,25 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeId, onSelect }) => {
           <Search
             size={16}
             className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"
+            aria-hidden="true"
           />
           <input
+            id="search-input"
             type="text"
+            role="searchbox"
+            aria-label="搜索函数"
             placeholder="搜索函数..."
             value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            onChange={handleSearchChange}
+            maxLength={MAX_SEARCH_LENGTH}
             className="w-full pl-9 pr-8 py-2 bg-gray-800 border border-gray-700 rounded-lg text-sm text-gray-200 placeholder-gray-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
           />
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
+              aria-label="清除搜索"
               className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300 transition-colors"
+              type="button"
             >
               <X size={16} />
             </button>

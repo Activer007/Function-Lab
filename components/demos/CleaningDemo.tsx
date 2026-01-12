@@ -3,38 +3,72 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { COLORS } from '../../constants';
 import { FileSpreadsheet, Trash2, ArrowDown, Grid3X3, List } from 'lucide-react';
 
+// ===== 类型定义 =====
 interface DemoProps {
   functionId: string;
 }
+
+interface DataRow {
+  id: number;
+  val: string | number | null;
+  status?: string;
+  isNull?: boolean;
+  display?: string;
+  isErr?: boolean;
+  filled?: boolean;
+}
+
+interface ReadCsvDataRow {
+  id: number;
+  name: string;
+  score: number;
+}
+
+// ===== 常量定义 =====
+// read_csv 演示数据
+const READ_CSV_MOCK_DATA: ReadCsvDataRow[] = [
+  { id: 1, name: 'Alice', score: 95 },
+  { id: 2, name: 'Bob', score: 87 },
+  { id: 3, name: 'Charlie', score: 92 },
+] as const;
+
+// drop_duplicates 初始数据
+const DROP_DUPLICATES_INITIAL_DATA: DataRow[] = [
+  { id: 1, val: 'Alice', status: 'normal' },
+  { id: 2, val: 'Bob', status: 'normal' },
+  { id: 3, val: 'Alice', status: 'normal' },
+  { id: 4, val: 'Charlie', status: 'normal' },
+];
+
+// fillna/dropna/isnull 初始数据
+const NULL_ROWS_INITIAL_DATA: DataRow[] = [
+  { id: 1, val: 100, isNull: false },
+  { id: 2, val: null, isNull: true },
+  { id: 3, val: 300, isNull: false },
+  { id: 4, val: null, isNull: true },
+];
+
+// to_numeric 初始数据
+const NUM_DATA_INITIAL: DataRow[] = [
+  { id: 1, val: '123', display: '123', isErr: false },
+  { id: 2, val: 'abc', display: 'abc', isErr: true },
+  { id: 3, val: '456', display: '456', isErr: false },
+];
 
 export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
   const [step, setStep] = useState(0);
 
   // --- Read CSV State ---
   const [csvExpanded, setCsvExpanded] = useState(false);
-  
+
   // --- Duplicates State ---
-  const [dupRows, setDupRows] = useState([
-    { id: 1, val: 'A', status: 'normal' },
-    { id: 2, val: 'B', status: 'normal' },
-    { id: 3, val: 'A', status: 'normal' }, // Duplicate
-    { id: 4, val: 'C', status: 'normal' },
-  ]);
+  const [dupRows, setDupRows] = useState<DataRow[]>(DROP_DUPLICATES_INITIAL_DATA);
 
   // --- Null State ---
-  const [nullRows, setNullRows] = useState([
-    { id: 1, val: 100, isNull: false },
-    { id: 2, val: null, isNull: true },
-    { id: 3, val: 300, isNull: false },
-    { id: 4, val: null, isNull: true },
-  ]);
+  const [nullRows, setNullRows] = useState<DataRow[]>(NULL_ROWS_INITIAL_DATA);
 
   // --- Numeric State ---
-  const [numData, setNumData] = useState([
-    { id: 1, val: "123", display: "123", isErr: false },
-    { id: 2, val: "abc", display: "abc", isErr: true },
-    { id: 3, val: "456", display: "456", isErr: false },
-  ]);
+  const [numData, setNumData] = useState<DataRow[]>(NUM_DATA_INITIAL);
 
   // --- Astype State ---
   const [astypeConverted, setAstypeConverted] = useState(false);
@@ -49,23 +83,9 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
   useEffect(() => {
     setStep(0);
     setCsvExpanded(false);
-    setDupRows([
-      { id: 1, val: 'Alice', status: 'normal' },
-      { id: 2, val: 'Bob', status: 'normal' },
-      { id: 3, val: 'Alice', status: 'normal' }, 
-      { id: 4, val: 'Charlie', status: 'normal' },
-    ]);
-    setNullRows([
-      { id: 1, val: 100, isNull: false },
-      { id: 2, val: null, isNull: true }, // Gap
-      { id: 3, val: 300, isNull: false },
-      { id: 4, val: null, isNull: true }, // Gap
-    ]);
-    setNumData([
-      { id: 1, val: "123", display: "123", isErr: false },
-      { id: 2, val: "abc", display: "abc", isErr: true },
-      { id: 3, val: "456", display: "456", isErr: false },
-    ]);
+    setDupRows(DROP_DUPLICATES_INITIAL_DATA);
+    setNullRows(NULL_ROWS_INITIAL_DATA);
+    setNumData(NUM_DATA_INITIAL);
     setAstypeConverted(false);
     setIsArray(false);
     setShowColumns(false);
@@ -74,12 +94,6 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
 
   // --- READ_CSV Visualizer ---
   if (functionId === 'read_csv') {
-    const mockData = [
-      { id: 1, name: 'Alice', score: 95 },
-      { id: 2, name: 'Bob', score: 87 },
-      { id: 3, name: 'Charlie', score: 92 },
-    ];
-
     return (
       <div className="flex flex-col items-center h-full pt-20">
         {/* 独立的重置按钮 */}
@@ -133,7 +147,7 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
               ))}
 
               {/* Data */}
-              {mockData.flatMap((row, idx) => [
+              {READ_CSV_MOCK_DATA.flatMap((row, idx) => [
                 <motion.div
                   key={`${row.id}-id`}
                   initial={{ opacity: 0, x: -20 }}
