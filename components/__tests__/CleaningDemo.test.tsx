@@ -145,14 +145,55 @@ describe('CleaningDemo Component', () => {
   });
 
   describe('isnull visualization', () => {
-    it('should not show execute button', () => {
+    it('should show execute button', () => {
       render(<CleaningDemo functionId="isnull" />);
-      expect(screen.queryByText(/Execute isnull/i)).not.toBeInTheDocument();
+      expect(screen.getByText(/Execute isnull/i)).toBeInTheDocument();
     });
 
-    it('should show TRUE for null values', () => {
+    it('should show DataFrame table structure', () => {
       render(<CleaningDemo functionId="isnull" />);
-      expect(screen.getByText('TRUE')).toBeInTheDocument();
+      expect(screen.getByText('DataFrame')).toBeInTheDocument();
+      expect(screen.getByText('Index')).toBeInTheDocument();
+      expect(screen.getByText('Value')).toBeInTheDocument();
+    });
+
+    it('should not show TRUE/FALSE labels initially', () => {
+      render(<CleaningDemo functionId="isnull" />);
+      expect(screen.queryByText('TRUE')).not.toBeInTheDocument();
+      expect(screen.queryByText('FALSE')).not.toBeInTheDocument();
+    });
+
+    it('should show detection results when button clicked', async () => {
+      render(<CleaningDemo functionId="isnull" />);
+
+      const executeButton = screen.getByText(/Execute isnull/i);
+      fireEvent.click(executeButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('TRUE')).toBeInTheDocument();
+        expect(screen.getByText('FALSE')).toBeInTheDocument();
+        expect(screen.getByText(/2 null value\(s\) detected/i)).toBeInTheDocument();
+      });
+    });
+
+    it('should reset when reset button is clicked', async () => {
+      render(<CleaningDemo functionId="isnull" />);
+
+      // Execute detection
+      const executeButton = screen.getByText(/Execute isnull/i);
+      fireEvent.click(executeButton);
+
+      await waitFor(() => {
+        expect(screen.getByText('TRUE')).toBeInTheDocument();
+      });
+
+      // Reset
+      const resetButton = screen.getByText(/重置 isnull/i);
+      fireEvent.click(resetButton);
+
+      await waitFor(() => {
+        expect(screen.queryByText('TRUE')).not.toBeInTheDocument();
+      });
     });
   });
 
