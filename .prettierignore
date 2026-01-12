@@ -1,0 +1,26 @@
+# Dependencies
+node_modules
+package-lock.json
+
+# Build outputs
+dist
+build
+
+# Cache
+.vite
+.turbo
+.next
+
+# Config files
+*.config.js
+*.config.ts
+vite-env.d.ts
+
+# Logs
+*.log
+
+# Other
+.env
+.env.local
+.DS_Store
+coverage
