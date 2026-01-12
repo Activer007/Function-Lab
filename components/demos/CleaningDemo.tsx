@@ -79,6 +79,9 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- columns State ---
   const [showColumns, setShowColumns] = useState(false);
 
+  // --- isnull State ---
+  const [isnullShowDetection, setIsnullShowDetection] = useState(false);
+
   // Reset logic when function changes
   useEffect(() => {
     setStep(0);
@@ -89,6 +92,7 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
     setAstypeConverted(false);
     setIsArray(false);
     setShowColumns(false);
+    setIsnullShowDetection(false);
   }, [functionId]);
 
 
@@ -243,29 +247,179 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
     );
   }
 
-  // --- FILLNA & DROPNA & ISNULL Visualizer ---
-  if (functionId === 'fillna' || functionId === 'dropna' || functionId === 'isnull') {
+  // --- ISNULL Visualizer ---
+  if (functionId === 'isnull') {
+    const nullCount = nullRows.filter(r => r.isNull).length;
+
+    return (
+      <div className="flex flex-col items-center h-full pt-20">
+        {/* 执行/重置按钮 */}
+        <button
+          onClick={() => setIsnullShowDetection(!isnullShowDetection)}
+          className="mb-8 px-4 py-2 bg-blue-600 rounded hover:bg-blue-500 text-sm font-semibold transition-colors"
+        >
+          {isnullShowDetection ? "重置 isnull()" : "Execute isnull()"}
+        </button>
+
+        {/* 数据表格 */}
+        <motion.div
+          className="bg-gray-800 p-4 rounded-lg shadow-2xl border border-gray-700 w-auto"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+        >
+          {/* 表格标题信息栏 */}
+          <div className="flex items-center gap-2 mb-3 pb-2 border-b border-gray-700">
+            <Grid3X3 size={14} className="text-blue-500" />
+            <span className="text-sm text-gray-300">DataFrame</span>
+            <span className="text-xs text-gray-600">• 4 rows × 1 column</span>
+            {isnullShowDetection && nullCount > 0 && (
+              <motion.span
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="ml-auto text-xs text-red-400 font-semibold"
+              >
+                ⚠ {nullCount} null values found
+              </motion.span>
+            )}
+          </div>
+
+          {/* 表头 */}
+          <div className="grid grid-cols-2 gap-2 mb-2">
+            <div className="text-xs font-bold text-gray-400 uppercase pb-2 border-b border-gray-600 text-center w-16">
+              Index
+            </div>
+            <div className="text-xs font-bold text-gray-400 uppercase pb-2 border-b border-gray-600 text-center w-24">
+              Value
+            </div>
+          </div>
+
+          {/* 数据行 */}
+          <div className="space-y-2">
+            <AnimatePresence>
+              {nullRows.map((row, idx) => (
+                <motion.div
+                  key={row.id}
+                  layout
+                  initial={{ opacity: 0, x: -20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  className="grid grid-cols-2 gap-2"
+                >
+                  {/* Index 列 */}
+                  <div className="h-10 bg-gray-700/50 rounded flex items-center justify-center text-sm text-gray-400 font-mono w-16">
+                    {row.id}
+                  </div>
+
+                  {/* Value 列 - 使用 flex 布局，标签和数值水平排列 */}
+                  <div className="h-10 bg-gray-700/50 rounded flex items-center justify-center px-2 w-24">
+                    {row.isNull ? (
+                      <>
+                        {/* isnull 检测结果标签 - 显示在左侧 */}
+                        <AnimatePresence>
+                          {isnullShowDetection && (
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.5 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.5 }}
+                              transition={{ delay: idx * 0.1 + 0.3 }}
+                              className="mr-2"
+                            >
+                              <div className="bg-red-900/90 text-red-300 text-[10px] px-1.5 py-0.5 rounded font-bold border border-red-700 whitespace-nowrap">
+                                TRUE
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                        {/* 黑洞效果 */}
+                        <motion.div
+                          className="w-5 h-5 rounded-full bg-black shadow-[0_0_8px_#EF4444]"
+                          animate={{ scale: [1, 1.15, 1] }}
+                          transition={{ repeat: Infinity, duration: 1.5 }}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        {/* isnull 检测结果标签 - 显示在左侧 */}
+                        <AnimatePresence>
+                          {isnullShowDetection && (
+                            <motion.div
+                              initial={{ opacity: 0, scale: 0.5 }}
+                              animate={{ opacity: 1, scale: 1 }}
+                              exit={{ opacity: 0, scale: 0.5 }}
+                              transition={{ delay: idx * 0.1 + 0.3 }}
+                              className="mr-2"
+                            >
+                              <div className="bg-green-900/90 text-green-300 text-[10px] px-1.5 py-0.5 rounded font-bold border border-green-700 whitespace-nowrap">
+                                FALSE
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
+                        {/* 正常值 */}
+                        <motion.div
+                          layoutId={`val-${row.id}`}
+                          className="text-white font-mono text-sm flex-1 text-center"
+                        >
+                          {row.val}
+                        </motion.div>
+                      </>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
+
+          {/* 结果反馈消息 */}
+          <AnimatePresence>
+            {isnullShowDetection && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-3 pt-2 border-t border-gray-700 text-xs text-center"
+              >
+                {nullCount > 0 ? (
+                  <span className="text-red-400">
+                    ✓ Detection complete: {nullCount} null value(s) detected
+                  </span>
+                ) : (
+                  <span className="text-green-400">
+                    ✓ No null values found
+                  </span>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      </div>
+    );
+  }
+
+  // --- FILLNA Visualizer ---
+  if (functionId === 'fillna') {
     const handleFill = () => {
        setNullRows(prev => prev.map(r => r.isNull ? { ...r, isNull: false, val: 0, filled: true } : r));
     };
 
-    const handleDrop = () => {
-      setNullRows(prev => prev.filter(r => !r.isNull));
-    };
-
-    const showIsnull = functionId === 'isnull';
+    const hasNulls = nullRows.some(r => r.isNull);
+    const filledCount = nullRows.filter(r => 'filled' in r).length;
 
     return (
       <div className="flex flex-col items-center h-full pt-20">
-        {!showIsnull && (
-          <button 
-            onClick={functionId === 'fillna' ? handleFill : handleDrop} 
-            className="mb-8 px-4 py-2 bg-blue-600 rounded hover:bg-blue-500 text-sm font-semibold transition-colors"
-          >
-            Execute {functionId}()
-          </button>
-        )}
-        
+        <button
+          onClick={handleFill}
+          disabled={!hasNulls}
+          className={`mb-8 px-4 py-2 text-sm font-semibold rounded transition-colors ${
+            hasNulls
+              ? 'bg-blue-600 hover:bg-blue-500'
+              : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          Execute fillna(0)
+        </button>
+
         <div className="w-80 space-y-3">
           <AnimatePresence>
             {nullRows.map((row) => (
@@ -274,36 +428,21 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
                 layout
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1, y: 0 }}
-                exit={{ 
-                  y: 300, // Fall off screen
-                  opacity: 0,
-                  rotate: -20, 
-                  transition: { duration: 0.8, ease: "anticipate" }
-                }}
                 className={`h-12 border ${row.isNull ? 'border-red-500/50' : 'border-gray-700'} bg-gray-800 rounded-lg flex items-center px-4 relative`}
               >
                 <div className="w-8 text-gray-500 text-xs">#{row.id}</div>
-                
+
                 {row.isNull ? (
                    // The "Black Hole"
                    <div className="flex-1 flex justify-center relative">
-                     <motion.div 
+                     <motion.div
                         className="w-6 h-6 rounded-full bg-black shadow-[0_0_10px_#EF4444]"
                         animate={{ scale: [1, 1.1, 1] }}
                         transition={{ repeat: Infinity, duration: 2 }}
                      />
-                     {showIsnull && (
-                        <motion.div 
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={{ opacity: 1, scale: 1.2 }}
-                          className="absolute text-red-500 font-bold text-xs -top-4"
-                        >
-                          TRUE
-                        </motion.div>
-                     )}
                    </div>
                 ) : (
-                  <motion.div 
+                  <motion.div
                     layoutId={`val-${row.id}`}
                     className={`flex-1 text-center font-mono ${'filled' in row ? 'text-green-400' : 'text-white'}`}
                   >
@@ -312,7 +451,7 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
                 )}
 
                 {/* Particle effect for fillna patch flying in */}
-                {functionId === 'fillna' && 'filled' in row && row.val === 0 && (
+                {'filled' in row && row.val === 0 && (
                    <motion.div
                      initial={{ x: 200, y: -200, scale: 2, opacity: 0 }}
                      animate={{ x: 0, y: 0, scale: 1, opacity: 1 }}
@@ -326,6 +465,95 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
             ))}
           </AnimatePresence>
         </div>
+
+        {/* 结果反馈 */}
+        {filledCount > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-4 text-xs text-green-400"
+          >
+            ✓ Filled {filledCount} null value(s) with 0
+          </motion.div>
+        )}
+      </div>
+    );
+  }
+
+  // --- DROPNA Visualizer ---
+  if (functionId === 'dropna') {
+    const handleDrop = () => {
+      setNullRows(prev => prev.filter(r => !r.isNull));
+    };
+
+    const initialCount = 4;
+    const currentCount = nullRows.length;
+    const droppedCount = initialCount - currentCount;
+
+    return (
+      <div className="flex flex-col items-center h-full pt-20">
+        <button
+          onClick={handleDrop}
+          disabled={droppedCount > 0}
+          className={`mb-8 px-4 py-2 text-sm font-semibold rounded transition-colors ${
+            droppedCount === 0
+              ? 'bg-blue-600 hover:bg-blue-500'
+              : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+          }`}
+        >
+          Execute dropna()
+        </button>
+
+        <div className="w-80 space-y-3">
+          <AnimatePresence>
+            {nullRows.map((row) => (
+              <motion.div
+                key={row.id}
+                layout
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{
+                  y: 300,
+                  opacity: 0,
+                  rotate: -20,
+                  transition: { duration: 0.8, ease: "anticipate" }
+                }}
+                className={`h-12 border ${row.isNull ? 'border-red-500/50' : 'border-gray-700'} bg-gray-800 rounded-lg flex items-center px-4 relative`}
+              >
+                <div className="w-8 text-gray-500 text-xs">#{row.id}</div>
+
+                {row.isNull ? (
+                   // The "Black Hole"
+                   <div className="flex-1 flex justify-center relative">
+                     <motion.div
+                        className="w-6 h-6 rounded-full bg-black shadow-[0_0_10px_#EF4444]"
+                        animate={{ scale: [1, 1.1, 1] }}
+                        transition={{ repeat: Infinity, duration: 2 }}
+                     />
+                   </div>
+                ) : (
+                  <motion.div
+                    layoutId={`val-${row.id}`}
+                    className="flex-1 text-center font-mono text-white"
+                  >
+                    {row.val}
+                  </motion.div>
+                )}
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
+
+        {/* 结果反馈 */}
+        {droppedCount > 0 && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-4 text-xs text-red-400"
+          >
+            ✓ Dropped {droppedCount} row(s) with null values
+          </motion.div>
+        )}
       </div>
     );
   }
