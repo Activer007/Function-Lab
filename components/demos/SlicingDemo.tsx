@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DemoProps {
@@ -23,6 +23,14 @@ export const SlicingDemo: React.FC<DemoProps> = ({ functionId }) => {
 
   // --- Subset Data ---
   const [subsetSelected, setSubsetSelected] = useState(false);
+
+  // Reset logic when function changes
+  useEffect(() => {
+    setHoverTarget('none');
+    setTargetIdx(-1);
+    setQueryTriggered(false);
+    setSubsetSelected(false);
+  }, [functionId]);
 
   if (functionId === 'loc_iloc') {
     return (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DemoProps {
@@ -23,6 +23,11 @@ export const EngineeringDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- RESAMPLE ---
   const minorityClass = [1];
   const majorityClass = [1, 2, 3, 4, 5];
+
+  // Reset logic when function changes
+  useEffect(() => {
+    setTransformed(false);
+  }, [functionId]);
 
   const toggle = () => setTransformed(!transformed);
 

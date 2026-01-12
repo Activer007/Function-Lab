@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DemoProps {
@@ -8,6 +8,12 @@ interface DemoProps {
 export const TrainingDemo: React.FC<DemoProps> = ({ functionId }) => {
   const [split, setSplit] = useState(false);
   const [predicting, setPredicting] = useState(false);
+
+  // Reset logic when function changes
+  useEffect(() => {
+    setSplit(false);
+    setPredicting(false);
+  }, [functionId]);
 
   if (functionId === 'train_test_split') {
     const dots = Array.from({ length: 20 }).map((_, i) => i);

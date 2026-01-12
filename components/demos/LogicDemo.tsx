@@ -183,42 +183,89 @@ export const LogicDemo: React.FC<DemoProps> = ({ functionId }) => {
       const arr = [10, 50, 20, 80, 30];
       // Argmax index = 3 (val 80)
       // Argsort indices (asc) = [0(10), 2(20), 4(30), 1(50), 3(80)]
-      
+
+      // Sorted order for argsort visualization
+      const sortedIndices = [0, 2, 4, 1, 3]; // indices that would sort the array
+
       return (
           <div className="flex flex-col items-center justify-center h-full">
             <div className="flex gap-4 mb-10">
-                <button onClick={() => setArgState(argState === 'max' ? 'none' : 'max')} className="px-4 py-2 bg-purple-600 rounded text-xs font-bold">Argmax</button>
-                <button onClick={() => setArgState(argState === 'sort' ? 'none' : 'sort')} className="px-4 py-2 bg-pink-600 rounded text-xs font-bold">Argsort</button>
+                <button onClick={() => setArgState(argState === 'max' ? 'none' : 'max')} className="px-4 py-2 bg-purple-600 rounded hover:bg-purple-500 transition-colors text-xs font-bold">Argmax</button>
+                <button onClick={() => setArgState(argState === 'sort' ? 'none' : 'sort')} className="px-4 py-2 bg-pink-600 rounded hover:bg-pink-500 transition-colors text-xs font-bold">Argsort</button>
             </div>
 
-            <div className="flex gap-2">
-                {arr.map((val, idx) => (
-                    <motion.div 
-                        key={idx}
-                        layout
-                        className="flex flex-col items-center gap-2"
-                        animate={argState === 'sort' ? { order: val } : { order: 0 }} // Flex order trick for sorting visual? No, framer layout
+            <div className="flex gap-3">
+                {arr.map((val, originalIdx) => {
+                    // Find position in sorted order
+                    const sortedPos = sortedIndices.indexOf(originalIdx);
+
+                    return (
+                        <motion.div
+                            key={originalIdx}
+                            layout
+                            className="flex flex-col items-center gap-2"
+                            animate={argState === 'sort' ? { x: sortedPos * 70 } : { x: 0 }}
+                            transition={{ type: "spring", stiffness: 60, damping: 15 }}
+                        >
+                             {/* Index Bubble */}
+                             <motion.div
+                                className={`w-10 h-10 rounded-full flex items-center justify-center text-xs font-mono font-bold border shadow-lg
+                                    ${argState === 'max' && originalIdx === 3 ? 'bg-purple-500 border-purple-300 text-white scale-125 shadow-purple-500/50' :
+                                      argState === 'sort' ? 'bg-pink-600 border-pink-400 text-white' :
+                                      'bg-gray-800 border-gray-600 text-gray-500'}`}
+                                animate={argState === 'sort' ? { scale: [1, 1.1, 1] } : { scale: 1 }}
+                                transition={{ delay: sortedPos * 0.1, duration: 0.3 }}
+                             >
+                                 {originalIdx}
+                             </motion.div>
+
+                             {/* Value Bar */}
+                             <motion.div
+                                className={`w-14 rounded-t flex items-end justify-center pb-2 text-white font-bold shadow-md
+                                    ${argState === 'max' && originalIdx === 3 ? 'bg-purple-600' : 'bg-gray-700'}`}
+                                style={{ height: val * 2 }}
+                                animate={argState === 'sort' ? { backgroundColor: '#DB2777' } : {}}
+                             >
+                                 {val}
+                             </motion.div>
+
+                             {/* Sorted position indicator */}
+                             {argState === 'sort' && (
+                                 <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: sortedPos * 0.1 + 0.3 }}
+                                    className="text-pink-400 text-xs font-mono"
+                                 >
+                                     #{sortedPos + 1}
+                                 </motion.div>
+                             )}
+                        </motion.div>
+                    );
+                })}
+            </div>
+
+            <div className="mt-8 text-center h-16 px-4">
+                {argState === 'max' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-green-400 font-mono text-sm"
                     >
-                         {/* Index Bubble */}
-                         <motion.div 
-                            className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-mono font-bold border 
-                                ${argState === 'max' && idx === 3 ? 'bg-purple-500 border-purple-300 text-white scale-125' : 
-                                  argState === 'sort' ? 'bg-pink-600 border-pink-400 text-white' : 'bg-gray-800 border-gray-600 text-gray-500'}`}
-                         >
-                             {idx}
-                         </motion.div>
-
-                         {/* Value Bar */}
-                         <div className={`w-12 bg-gray-700 rounded-t flex items-end justify-center pb-2 text-white font-bold transition-colors ${argState === 'max' && idx === 3 ? 'bg-purple-900' : ''}`} style={{ height: val * 2 }}>
-                             {val}
-                         </div>
+                        <span className="text-purple-400 font-bold">argmax([10, 50, 20, 80, 30])</span> = <span className="text-white font-bold">3</span>
+                        <div className="text-xs text-gray-400 mt-1">Index of maximum value (80)</div>
                     </motion.div>
-                ))}
-            </div>
-
-            <div className="mt-8 text-center h-8 text-green-400 font-mono">
-                {argState === 'max' && "Index 3 is the Max (80)"}
-                {argState === 'sort' && "Indices [0, 2, 4, 1, 3] sort the array"}
+                )}
+                {argState === 'sort' && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-green-400 font-mono text-sm"
+                    >
+                        <span className="text-pink-400 font-bold">argsort([10, 50, 20, 80, 30])</span> = <span className="text-white font-bold">[0, 2, 4, 1, 3]</span>
+                        <div className="text-xs text-gray-400 mt-1">Indices that would sort the array</div>
+                    </motion.div>
+                )}
             </div>
           </div>
       );
