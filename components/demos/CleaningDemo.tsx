@@ -26,14 +26,14 @@ interface ReadCsvDataRow {
 
 // ===== 常量定义 =====
 // read_csv 演示数据
-const READ_CSV_MOCK_DATA: ReadCsvDataRow[] = [
+export const READ_CSV_MOCK_DATA: ReadCsvDataRow[] = [
   { id: 1, name: 'Alice', score: 95 },
   { id: 2, name: 'Bob', score: 87 },
   { id: 3, name: 'Charlie', score: 92 },
 ] as const;
 
 // drop_duplicates 初始数据
-const DROP_DUPLICATES_INITIAL_DATA: DataRow[] = [
+export const DROP_DUPLICATES_INITIAL_DATA: DataRow[] = [
   { id: 1, val: 'Alice', status: 'normal' },
   { id: 2, val: 'Bob', status: 'normal' },
   { id: 3, val: 'Alice', status: 'normal' },
@@ -41,7 +41,7 @@ const DROP_DUPLICATES_INITIAL_DATA: DataRow[] = [
 ];
 
 // fillna/dropna/isnull 初始数据
-const NULL_ROWS_INITIAL_DATA: DataRow[] = [
+export const NULL_ROWS_INITIAL_DATA: DataRow[] = [
   { id: 1, val: 100, isNull: false },
   { id: 2, val: null, isNull: true },
   { id: 3, val: 300, isNull: false },
@@ -49,7 +49,7 @@ const NULL_ROWS_INITIAL_DATA: DataRow[] = [
 ];
 
 // to_numeric 初始数据
-const NUM_DATA_INITIAL: DataRow[] = [
+export const NUM_DATA_INITIAL: DataRow[] = [
   { id: 1, val: '123', display: '123', isErr: false },
   { id: 2, val: 'abc', display: 'abc', isErr: true },
   { id: 3, val: '456', display: '456', isErr: false },
@@ -99,7 +99,7 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- READ_CSV Visualizer ---
   if (functionId === 'read_csv') {
     return (
-      <div className="flex flex-col items-center h-full pt-20">
+      <div className="flex flex-col items-center justify-center h-full">
         {/* 独立的重置按钮 */}
         {csvExpanded && (
           <button
@@ -315,21 +315,18 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
                     {row.isNull ? (
                       <>
                         {/* isnull 检测结果标签 - 显示在左侧 */}
-                        <AnimatePresence>
-                          {isnullShowDetection && (
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.5 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0, scale: 0.5 }}
-                              transition={{ delay: idx * 0.1 + 0.3 }}
-                              className="mr-2"
-                            >
-                              <div className="bg-red-900/90 text-red-300 text-[10px] px-1.5 py-0.5 rounded font-bold border border-red-700 whitespace-nowrap">
-                                TRUE
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        {isnullShowDetection && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: idx * 0.1 + 0.3 }}
+                            className="mr-2"
+                          >
+                            <div className="bg-red-900/90 text-red-300 text-[10px] px-1.5 py-0.5 rounded font-bold border border-red-700 whitespace-nowrap">
+                              TRUE
+                            </div>
+                          </motion.div>
+                        )}
                         {/* 黑洞效果 */}
                         <motion.div
                           className="w-5 h-5 rounded-full bg-black shadow-[0_0_8px_#EF4444]"
@@ -340,21 +337,18 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
                     ) : (
                       <>
                         {/* isnull 检测结果标签 - 显示在左侧 */}
-                        <AnimatePresence>
-                          {isnullShowDetection && (
-                            <motion.div
-                              initial={{ opacity: 0, scale: 0.5 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              exit={{ opacity: 0, scale: 0.5 }}
-                              transition={{ delay: idx * 0.1 + 0.3 }}
-                              className="mr-2"
-                            >
-                              <div className="bg-green-900/90 text-green-300 text-[10px] px-1.5 py-0.5 rounded font-bold border border-green-700 whitespace-nowrap">
-                                FALSE
-                              </div>
-                            </motion.div>
-                          )}
-                        </AnimatePresence>
+                        {isnullShowDetection && (
+                          <motion.div
+                            initial={{ opacity: 0, scale: 0.5 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: idx * 0.1 + 0.3 }}
+                            className="mr-2"
+                          >
+                            <div className="bg-green-900/90 text-green-300 text-[10px] px-1.5 py-0.5 rounded font-bold border border-green-700 whitespace-nowrap">
+                              FALSE
+                            </div>
+                          </motion.div>
+                        )}
                         {/* 正常值 */}
                         <motion.div
                           layoutId={`val-${row.id}`}
