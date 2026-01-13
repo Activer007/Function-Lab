@@ -711,11 +711,11 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
             {/* Floating Columns Index */}
             <AnimatePresence>
                 {showColumns && (
-                    <motion.div 
-                        initial={{ y: 0, scale: 0.9, opacity: 0 }}
-                        animate={{ y: -50, scale: 1.1, opacity: 1 }}
-                        exit={{ y: 0, scale: 0.9, opacity: 0 }}
-                        className="absolute -top-4 left-0 right-0 z-10"
+                    <motion.div
+                        initial={{ y: 20, scale: 0.9, opacity: 0 }}
+                        animate={{ y: 0, scale: 1.1, opacity: 1 }}
+                        exit={{ y: 20, scale: 0.9, opacity: 0 }}
+                        className="absolute top-full left-0 right-0 mt-8 z-10"
                     >
                          <div className="flex gap-2 p-3 bg-blue-900/90 backdrop-blur border border-blue-500 rounded-lg shadow-xl justify-center">
                             {['Name', 'Age', 'City'].map(c => (
