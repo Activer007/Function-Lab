@@ -5,25 +5,39 @@ import { Visualizer } from './components/Visualizer';
 import { DemoErrorBoundary } from './components/ErrorBoundary';
 import { FUNCTIONS } from './constants';
 import { Home } from 'lucide-react';
+import { AnimatePresence } from 'framer-motion';
+import { WelcomeScreen } from './components/WelcomeScreen';
 
 const PORTAL_URL = "https://ai-trainer-porama-system.vercel.app/";
 
 function App() {
   const [activeFunctionId, setActiveFunctionId] = useState<string>(FUNCTIONS[0].id);
+  const [showWelcome, setShowWelcome] = useState(() => {
+    return !localStorage.getItem('hasSeenWelcome');
+  });
 
   const activeFunc = FUNCTIONS.find(f => f.id === activeFunctionId) || FUNCTIONS[0];
 
+  const handleStart = () => {
+    localStorage.setItem('hasSeenWelcome', 'true');
+    setShowWelcome(false);
+  };
+
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-black text-gray-100 font-sans">
+    <div className="flex h-screen w-screen overflow-hidden bg-black text-gray-100 font-sans relative">
+      <AnimatePresence>
+        {showWelcome && <WelcomeScreen onStart={handleStart} />}
+      </AnimatePresence>
+
       {/* Left Sidebar */}
-      <Sidebar 
-        activeId={activeFunctionId} 
-        onSelect={setActiveFunctionId} 
+      <Sidebar
+        activeId={activeFunctionId}
+        onSelect={setActiveFunctionId}
       />
 
       {/* Main Content Area */}
       <div className="flex-1 flex flex-col h-full">
-        
+
         {/* Top: Visualization Canvas */}
         <DemoErrorBoundary>
           <Visualizer func={activeFunc} />
@@ -31,7 +45,7 @@ function App() {
 
         {/* Bottom: Info Panel */}
         <InfoPanel func={activeFunc} />
-        
+
       </div>
 
       {/* Portal Return Button */}

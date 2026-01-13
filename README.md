@@ -355,12 +355,6 @@ npm run test:coverage
 
 ---
 
-## 👨‍💻 作者
-
-**Activer007** - [GitHub](https://github.com/Activer007)
-
----
-
 ## 🙏 致谢
 
 - [React](https://react.dev/) - UI 框架
