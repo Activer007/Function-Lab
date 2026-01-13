@@ -683,9 +683,9 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- COLUMNS Visualizer ---
   if (functionId === 'columns') {
     return (
-      <div className="flex flex-col items-center h-full pt-20">
-        <button 
-          onClick={() => setShowColumns(!showColumns)} 
+      <div className="flex flex-col items-center justify-center h-full">
+        <button
+          onClick={() => setShowColumns(!showColumns)}
           className="mb-12 px-4 py-2 bg-indigo-600 rounded hover:bg-indigo-500 text-sm font-semibold transition-colors"
         >
           {showColumns ? "Reset" : "Extract df.columns"}
@@ -711,11 +711,11 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
             {/* Floating Columns Index */}
             <AnimatePresence>
                 {showColumns && (
-                    <motion.div 
-                        initial={{ y: 0, scale: 0.9, opacity: 0 }}
-                        animate={{ y: -50, scale: 1.1, opacity: 1 }}
-                        exit={{ y: 0, scale: 0.9, opacity: 0 }}
-                        className="absolute -top-4 left-0 right-0 z-10"
+                    <motion.div
+                        initial={{ y: -10, scale: 0.9, opacity: 0 }}
+                        animate={{ y: -20, scale: 1.1, opacity: 1 }}
+                        exit={{ y: -10, scale: 0.9, opacity: 0 }}
+                        className="absolute -top-1 left-0 right-0 mt-2 z-10"
                     >
                          <div className="flex gap-2 p-3 bg-blue-900/90 backdrop-blur border border-blue-500 rounded-lg shadow-xl justify-center">
                             {['Name', 'Age', 'City'].map(c => (
