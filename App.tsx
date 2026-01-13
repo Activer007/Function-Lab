@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { InfoPanel } from './components/InfoPanel';
 import { Visualizer } from './components/Visualizer';
+import { DemoErrorBoundary } from './components/ErrorBoundary';
 import { FUNCTIONS } from './constants';
 import { Home } from 'lucide-react';
 
@@ -24,7 +25,9 @@ function App() {
       <div className="flex-1 flex flex-col h-full">
         
         {/* Top: Visualization Canvas */}
-        <Visualizer func={activeFunc} />
+        <DemoErrorBoundary>
+          <Visualizer func={activeFunc} />
+        </DemoErrorBoundary>
 
         {/* Bottom: Info Panel */}
         <InfoPanel func={activeFunc} />
