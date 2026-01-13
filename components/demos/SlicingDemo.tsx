@@ -95,11 +95,10 @@ export const SlicingDemo: React.FC<DemoProps> = ({ functionId }) => {
             {colLabels.map((col, ci) => (
               <motion.div
                 key={col}
-                className={`h-10 rounded flex items-center justify-center font-bold text-sm cursor-pointer transition-all ${
-                  hoverTarget === 'col' && hoverCol === ci
+                className={`h-10 rounded flex items-center justify-center font-bold text-sm cursor-pointer transition-all ${hoverTarget === 'col' && hoverCol === ci
                     ? 'bg-orange-600/50 border-2 border-orange-400 text-white shadow-[0_0_15px_rgba(249,115,22,0.5)]'
                     : 'bg-gray-700/50 text-gray-400 hover:text-white hover:bg-gray-700'
-                }`}
+                  }`}
                 onMouseEnter={() => { setHoverTarget('col'); setHoverCol(ci); }}
                 onMouseLeave={() => { setHoverTarget('none'); setHoverCol(-1); }}
               >
@@ -112,11 +111,10 @@ export const SlicingDemo: React.FC<DemoProps> = ({ functionId }) => {
               <React.Fragment key={ri}>
                 {/* 行索引 */}
                 <motion.div
-                  className={`h-10 rounded flex items-center justify-center font-mono text-sm cursor-pointer transition-all ${
-                    hoverTarget === 'row' && hoverRow === ri
+                  className={`h-10 rounded flex items-center justify-center font-mono text-sm cursor-pointer transition-all ${hoverTarget === 'row' && hoverRow === ri
                       ? 'bg-purple-600/50 border-2 border-purple-400 text-white shadow-[0_0_15px_rgba(168,85,247,0.5)]'
                       : 'bg-gray-700/50 text-gray-400 hover:text-white hover:bg-gray-700'
-                  }`}
+                    }`}
                   onMouseEnter={() => { setHoverTarget('row'); setHoverRow(ri); }}
                   onMouseLeave={() => { setHoverTarget('none'); setHoverRow(-1); }}
                 >
@@ -133,15 +131,14 @@ export const SlicingDemo: React.FC<DemoProps> = ({ functionId }) => {
                   return (
                     <motion.div
                       key={`${ri}-${ci}`}
-                      className={`h-10 rounded flex items-center justify-center font-mono text-sm cursor-pointer transition-all ${
-                        isCellHighlight
+                      className={`h-10 rounded flex items-center justify-center font-mono text-sm cursor-pointer transition-all ${isCellHighlight
                           ? 'bg-blue-600/80 border-2 border-blue-400 text-white shadow-[0_0_20px_rgba(59,130,246,0.8)] scale-110'
                           : isRowHighlight
                             ? 'bg-purple-600/30 border-2 border-purple-400/50 text-white'
                             : isColHighlight
                               ? 'bg-orange-600/30 border-2 border-orange-400/50 text-white'
                               : 'bg-gray-700/30 border border-gray-600 text-gray-300 hover:bg-gray-700/50'
-                      }`}
+                        }`}
                       onMouseEnter={() => { setHoverTarget('cell'); setHoverRow(ri); setHoverCol(ci); }}
                       onMouseLeave={() => { setHoverTarget('none'); setHoverRow(-1); setHoverCol(-1); }}
                       whileHover={{ scale: isCellHighlight ? 1.1 : 1.05 }}
@@ -252,40 +249,40 @@ export const SlicingDemo: React.FC<DemoProps> = ({ functionId }) => {
 
           {/* 柱状图区域 */}
           <div className="relative flex gap-4 items-end h-64 border-b-2 border-gray-600 pb-2 overflow-hidden w-full">
-             <AnimatePresence mode="popLayout">
-               {dataPoints.map((point) => {
-                 const passes = point.val > 50;
-                 // 只在第二阶段(queryRemoving)才真正移除不符合条件的柱子
-                 if (queryTriggered && queryRemoving && !passes) return null;
+            <AnimatePresence mode="popLayout">
+              {dataPoints.map((point) => {
+                const passes = point.val > 50;
+                // 只在第二阶段(queryRemoving)才真正移除不符合条件的柱子
+                if (queryTriggered && queryRemoving && !passes) return null;
 
-                 return (
-                   <motion.div
-                     key={point.id}
-                     layout
-                     initial={{ scale: 1, opacity: 1, y: 0 }}
-                     animate={{
-                       backgroundColor: queryTriggered ? (passes ? '#10B981' : '#EF4444') : '#3B82F6',
-                       y: 0,
-                       scale: queryTriggered && passes ? 1.05 : 1
-                     }}
-                     exit={{
-                       y: 100,
-                       opacity: 0,
-                       scale: 0,
-                       transition: { duration: 0.3 }
-                     }}
-                     transition={{ type: "spring", bounce: 0.2 }}
-                     className="w-12 rounded-t-lg flex items-end justify-center pb-2 text-xs font-bold text-white shadow-lg relative"
-                     style={{
-                       height: `${point.val * 2}px`,
-                       backgroundColor: queryTriggered ? (passes ? '#10B981' : '#EF4444') : '#3B82F6'
-                     }}
-                   >
-                     {point.val}
-                   </motion.div>
-                 );
-               })}
-             </AnimatePresence>
+                return (
+                  <motion.div
+                    key={point.id}
+                    layout
+                    initial={{ scale: 1, opacity: 1, y: 0 }}
+                    animate={{
+                      backgroundColor: queryTriggered ? (passes ? '#10B981' : '#EF4444') : '#3B82F6',
+                      y: 0,
+                      scale: queryTriggered && passes ? 1.05 : 1
+                    }}
+                    exit={{
+                      y: 100,
+                      opacity: 0,
+                      scale: 0,
+                      transition: { duration: 0.3 }
+                    }}
+                    transition={{ type: "spring", bounce: 0.2 }}
+                    className="w-12 rounded-t-lg flex items-end justify-center pb-2 text-xs font-bold text-white shadow-lg relative"
+                    style={{
+                      height: `${point.val * 2}px`,
+                      backgroundColor: queryTriggered ? (passes ? '#10B981' : '#EF4444') : '#3B82F6'
+                    }}
+                  >
+                    {point.val}
+                  </motion.div>
+                );
+              })}
+            </AnimatePresence>
           </div>
 
           {/* Y轴刻度 - 精确对应柱子高度 */}
@@ -336,50 +333,50 @@ export const SlicingDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- SUBSET Visualizer ---
   if (functionId === 'subset') {
     const columns = [
-        { id: 'col1', name: 'Name', keep: true },
-        { id: 'col2', name: 'Age', keep: true },
-        { id: 'col3', name: 'Garbage', keep: false },
-        { id: 'col4', name: 'Score', keep: true }
+      { id: 'col1', name: 'Name', keep: true },
+      { id: 'col2', name: 'Age', keep: true },
+      { id: 'col3', name: 'Garbage', keep: false },
+      { id: 'col4', name: 'Score', keep: true }
     ];
 
     return (
-      <div className="flex flex-col items-center justify-center h-full">
-          <button 
-             onClick={() => setSubsetSelected(!subsetSelected)} 
-             className="mb-10 px-6 py-2 bg-purple-600 rounded-full hover:bg-purple-500 transition-all z-20"
-          >
-             {subsetSelected ? "Show All Columns" : "Select Subset"}
-          </button>
+      <div className="flex flex-col items-center h-full pt-20">
+        <button
+          onClick={() => setSubsetSelected(!subsetSelected)}
+          className="mb-8 px-6 py-2 bg-purple-600 rounded-full hover:bg-purple-500 transition-all z-20"
+        >
+          {subsetSelected ? "Show All Columns" : "Select Subset"}
+        </button>
 
-          <div className="flex gap-2 p-4 border border-gray-700 rounded-xl bg-gray-900/50">
-             <AnimatePresence mode="popLayout">
-                 {columns.map((col) => {
-                     // If selected mode is on and column is not kept, hide it
-                     if (subsetSelected && !col.keep) return null;
+        <div className="flex gap-2 p-4 border border-gray-700 rounded-xl bg-gray-900/50">
+          <AnimatePresence mode="popLayout">
+            {columns.map((col) => {
+              // If selected mode is on and column is not kept, hide it
+              if (subsetSelected && !col.keep) return null;
 
-                     return (
-                         <motion.div
-                             layout
-                             key={col.id}
-                             initial={{ opacity: 0, scale: 0.8 }}
-                             animate={{ opacity: 1, scale: 1 }}
-                             exit={{ opacity: 0, scale: 0, width: 0 }}
-                             transition={{ type: "spring", damping: 20, stiffness: 100 }}
-                             className={`w-24 h-48 rounded-lg flex flex-col items-center border ${subsetSelected ? 'border-green-500 bg-green-900/20' : 'border-gray-600 bg-gray-800'}`}
-                         >
-                             <div className={`w-full py-2 text-center text-sm font-bold border-b ${subsetSelected ? 'border-green-500 text-green-300' : 'border-gray-600 text-gray-400'}`}>
-                                 {col.name}
-                             </div>
-                             <div className="flex-1 w-full p-2 space-y-2">
-                                 <div className="h-2 w-3/4 bg-gray-700/50 rounded"></div>
-                                 <div className="h-2 w-1/2 bg-gray-700/50 rounded"></div>
-                                 <div className="h-2 w-full bg-gray-700/50 rounded"></div>
-                             </div>
-                         </motion.div>
-                     );
-                 })}
-             </AnimatePresence>
-          </div>
+              return (
+                <motion.div
+                  layout
+                  key={col.id}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0, width: 0 }}
+                  transition={{ type: "spring", damping: 20, stiffness: 100 }}
+                  className={`w-24 h-48 rounded-lg flex flex-col items-center border ${subsetSelected ? 'border-green-500 bg-green-900/20' : 'border-gray-600 bg-gray-800'}`}
+                >
+                  <div className={`w-full py-2 text-center text-sm font-bold border-b ${subsetSelected ? 'border-green-500 text-green-300' : 'border-gray-600 text-gray-400'}`}>
+                    {col.name}
+                  </div>
+                  <div className="flex-1 w-full p-2 space-y-2">
+                    <div className="h-2 w-3/4 bg-gray-700/50 rounded"></div>
+                    <div className="h-2 w-1/2 bg-gray-700/50 rounded"></div>
+                    <div className="h-2 w-full bg-gray-700/50 rounded"></div>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
+        </div>
       </div>
     );
   }
