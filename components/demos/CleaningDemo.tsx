@@ -683,9 +683,9 @@ export const CleaningDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- COLUMNS Visualizer ---
   if (functionId === 'columns') {
     return (
-      <div className="flex flex-col items-center h-full pt-20">
-        <button 
-          onClick={() => setShowColumns(!showColumns)} 
+      <div className="flex flex-col items-center justify-center h-full">
+        <button
+          onClick={() => setShowColumns(!showColumns)}
           className="mb-12 px-4 py-2 bg-indigo-600 rounded hover:bg-indigo-500 text-sm font-semibold transition-colors"
         >
           {showColumns ? "Reset" : "Extract df.columns"}
