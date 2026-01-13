@@ -25,3 +25,38 @@ global.IntersectionObserver = class IntersectionObserver {
   }
   unobserve() {}
 };
+
+// Mock Framer Motion to avoid "Element type is invalid" errors in tests
+jest.mock('framer-motion', () => ({
+  motion: {
+    div: ({ children, ...props }) => {
+      const React = require('react');
+      // Filter out Framer Motion specific props
+      const {
+        initial,
+        animate,
+        exit,
+        transition,
+        layout,
+        layoutId,
+        ...rest
+      } = props;
+      return React.createElement('div', rest, children);
+    },
+    button: ({ children, ...props }) => {
+      const React = require('react');
+      const { initial, animate, exit, transition, ...rest } = props;
+      return React.createElement('button', rest, children);
+    },
+    span: ({ children, ...props }) => {
+      const React = require('react');
+      const { initial, animate, exit, transition, ...rest } = props;
+      return React.createElement('span', rest, children);
+    },
+  },
+  AnimatePresence: ({ children }) => {
+    const React = require('react');
+    return React.createElement(React.Fragment, null, children);
+  },
+}));
+
