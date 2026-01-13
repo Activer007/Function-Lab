@@ -269,12 +269,6 @@ COLORS = {
 
 ---
 
-## 👨‍💻 作者
-
-**Activer007** - [GitHub](https://github.com/Activer007)
-
----
-
 ## 🙏 致谢
 
 - [React](https://react.dev/) - UI 框架
@@ -297,7 +291,6 @@ COLORS = {
 
 **⭐ 如果这个项目对您有帮助，请给个 Star！**
 
-Made with ❤️ by Activer007
 
 </div>
 
