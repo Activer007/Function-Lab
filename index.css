@@ -3,6 +3,38 @@
 @tailwind utilities;
 
 body {
-  background-color: #111827;
+  background-color: #0b0f19; /* Slightly richer dark background */
   color: #f3f4f6;
+  overflow: hidden; /* Prevent body scroll if app handles it */
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(55, 65, 81, 0.5); /* gray-700 with opacity */
+  border-radius: 20px;
+  border: 2px solid transparent; /* Creates padding effect */
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(75, 85, 99, 0.8); /* gray-600 */
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(55, 65, 81, 0.5) transparent;
 }

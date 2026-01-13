@@ -24,7 +24,13 @@ function App() {
   };
 
   return (
-    <div className="flex h-screen w-screen overflow-hidden bg-black text-gray-100 font-sans relative">
+    <div className="flex h-screen w-screen overflow-hidden bg-[#0B0F19] text-gray-100 font-sans relative selection:bg-blue-500/30">
+      {/* Background Ambience */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-[-20%] left-[-10%] w-[50%] h-[50%] bg-blue-500/5 rounded-full blur-[120px]" />
+        <div className="absolute bottom-[-20%] right-[-10%] w-[50%] h-[50%] bg-purple-500/5 rounded-full blur-[120px]" />
+      </div>
+
       <AnimatePresence>
         {showWelcome && <WelcomeScreen onStart={handleStart} />}
       </AnimatePresence>
@@ -36,12 +42,14 @@ function App() {
       />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col h-full">
+      <div className="flex-1 flex flex-col h-full relative z-10">
 
         {/* Top: Visualization Canvas */}
-        <DemoErrorBoundary>
-          <Visualizer func={activeFunc} />
-        </DemoErrorBoundary>
+        <div className="flex-1 relative overflow-hidden">
+          <DemoErrorBoundary>
+            <Visualizer func={activeFunc} />
+          </DemoErrorBoundary>
+        </div>
 
         {/* Bottom: Info Panel */}
         <InfoPanel func={activeFunc} />
@@ -51,12 +59,12 @@ function App() {
       {/* Portal Return Button */}
       <a
         href={PORTAL_URL}
-        className="fixed bottom-6 right-6 z-50 p-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-full shadow-[0_0_20px_rgba(99,102,241,0.4)] backdrop-blur-md transition-all duration-300 hover:scale-110 hover:-translate-y-1 group flex items-center gap-0 hover:gap-2 overflow-hidden border border-white/20"
+        className="fixed bottom-6 right-6 z-50 p-3.5 bg-white/5 hover:bg-white/10 text-white rounded-full shadow-[0_0_20px_rgba(0,0,0,0.3)] backdrop-blur-md border border-white/10 transition-all duration-300 hover:scale-105 group flex items-center gap-0 hover:gap-2 overflow-hidden"
         title="返回备考系统门户"
       >
-        <Home className="w-6 h-6" />
-        <span className="max-w-0 group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap opacity-0 group-hover:opacity-100 text-sm font-bold">
-          返回门户
+        <Home className="w-5 h-5 text-gray-300 group-hover:text-white transition-colors" />
+        <span className="max-w-0 group-hover:max-w-xs transition-all duration-500 ease-in-out whitespace-nowrap opacity-0 group-hover:opacity-100 text-xs font-bold text-gray-200 group-hover:text-white">
+          Return to Portal
         </span>
       </a>
     </div>
