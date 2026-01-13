@@ -33,7 +33,7 @@ export const EngineeringDemo: React.FC<DemoProps> = ({ functionId }) => {
 
   if (functionId === 'label_encoder') {
     return (
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center pt-12 h-full">
         <button onClick={toggle} className="mb-10 px-4 py-2 bg-purple-600 rounded hover:bg-purple-500 transition-colors">
           {transformed ? "Inverse Transform" : "Fit Transform"}
         </button>
@@ -81,7 +81,7 @@ export const EngineeringDemo: React.FC<DemoProps> = ({ functionId }) => {
 
   if (functionId === 'minmax_scaler' || functionId === 'apply' || functionId === 'fit_transform') {
     return (
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center pt-12 h-full">
         <button onClick={toggle} className="mb-10 px-4 py-2 bg-purple-600 rounded hover:bg-purple-500 transition-colors">
           {functionId === 'apply' ? "Apply x/1000" : (functionId === 'fit_transform' ? "Fit & Transform" : "MinMaxScaler")}
         </button>
@@ -140,7 +140,7 @@ export const EngineeringDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- SOFTMAX Visualizer ---
   if (functionId === 'softmax') {
     return (
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center pt-12 h-full">
             <button onClick={toggle} className="mb-10 px-4 py-2 bg-purple-600 rounded hover:bg-purple-500 transition-colors">
                 {transformed ? "Reset" : "Compute Softmax"}
             </button>
@@ -175,7 +175,7 @@ export const EngineeringDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- FIT_RESAMPLE Visualizer ---
   if (functionId === 'fit_resample') {
       return (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center pt-12 h-full">
             <button onClick={toggle} className="mb-10 px-4 py-2 bg-pink-600 rounded hover:bg-pink-500 transition-colors">
                 {transformed ? "Reset" : "Fit Resample (Oversampling)"}
             </button>

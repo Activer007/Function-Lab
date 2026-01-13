@@ -17,9 +17,9 @@ export const TrainingDemo: React.FC<DemoProps> = ({ functionId }) => {
 
   if (functionId === 'train_test_split') {
     const dots = Array.from({ length: 20 }).map((_, i) => i);
-    
+
     return (
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center pt-12 h-full">
         <button onClick={() => setSplit(!split)} className="mb-8 px-4 py-2 bg-orange-600 rounded hover:bg-orange-500 transition-colors z-20">
           {split ? "Reset" : "Cut Dataset (80/20)"}
         </button>
@@ -64,7 +64,7 @@ export const TrainingDemo: React.FC<DemoProps> = ({ functionId }) => {
 
   if (functionId === 'confusion_matrix') {
     return (
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center pt-12 h-full">
         <div className="grid grid-cols-2 gap-4 w-64 h-64">
            {/* True Negative */}
            <motion.div 
@@ -125,7 +125,7 @@ export const TrainingDemo: React.FC<DemoProps> = ({ functionId }) => {
       };
 
       return (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center pt-12 h-full">
                <button onClick={startPrediction} disabled={predicting} className="mb-12 px-6 py-2 bg-green-600 rounded-full hover:bg-green-500 disabled:opacity-50 transition-all">
                    {predicting ? "Processing..." : "Model.predict(NewData)"}
                </button>

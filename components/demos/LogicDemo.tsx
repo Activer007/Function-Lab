@@ -54,7 +54,7 @@ export const LogicDemo: React.FC<DemoProps> = ({ functionId }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-full">
+        <div className="flex flex-col items-center pt-12 h-full">
             <button onClick={handleSort} className="mb-8 px-4 py-2 bg-indigo-600 rounded hover:bg-indigo-500 transition-colors">
                 Sort Descending
             </button>
@@ -79,7 +79,7 @@ export const LogicDemo: React.FC<DemoProps> = ({ functionId }) => {
 
   if (functionId === 'groupby') {
       return (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center pt-12 h-full">
               <button onClick={() => setGrouped(!grouped)} className="mb-10 px-4 py-2 bg-indigo-600 rounded hover:bg-indigo-500 transition-colors">
                   {grouped ? "Ungroup" : "GroupBy('Cat').Sum()"}
               </button>
@@ -131,7 +131,7 @@ export const LogicDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- CONCAT Visualizer ---
   if (functionId === 'concat') {
       return (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center pt-12 h-full">
             <button onClick={() => setConcatenated(!concatenated)} className="mb-10 px-4 py-2 bg-blue-600 rounded hover:bg-blue-500 transition-colors">
                 {concatenated ? "Reset" : "pd.concat([df1, df2])"}
             </button>
@@ -188,7 +188,7 @@ export const LogicDemo: React.FC<DemoProps> = ({ functionId }) => {
       const sortedIndices = [0, 2, 4, 1, 3]; // indices that would sort the array
 
       return (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center pt-12 h-full">
             <div className="flex gap-4 mb-10">
                 <button onClick={() => setArgState(argState === 'max' ? 'none' : 'max')} className="px-4 py-2 bg-purple-600 rounded hover:bg-purple-500 transition-colors text-xs font-bold">Argmax</button>
                 <button onClick={() => setArgState(argState === 'sort' ? 'none' : 'sort')} className="px-4 py-2 bg-pink-600 rounded hover:bg-pink-500 transition-colors text-xs font-bold">Argsort</button>
@@ -274,9 +274,9 @@ export const LogicDemo: React.FC<DemoProps> = ({ functionId }) => {
   // --- QUANTILE Visualizer ---
   if (functionId === 'quantile') {
       const sortedData = [10, 20, 30, 40, 50, 60, 70, 80];
-      
+
       return (
-          <div className="flex flex-col items-center justify-center h-full">
+          <div className="flex flex-col items-center pt-12 h-full">
             <button onClick={() => setShowQuantiles(!showQuantiles)} className="mb-10 px-4 py-2 bg-yellow-600 rounded hover:bg-yellow-500 transition-colors">
                 {showQuantiles ? "Hide" : "Show Quantiles (.25, .5, .75)"}
             </button>

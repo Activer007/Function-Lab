@@ -343,7 +343,7 @@ export const SlicingDemo: React.FC<DemoProps> = ({ functionId }) => {
     ];
 
     return (
-      <div className="flex flex-col items-center justify-center h-full">
+      <div className="flex flex-col items-center pt-12 h-full">
           <button 
              onClick={() => setSubsetSelected(!subsetSelected)} 
              className="mb-10 px-6 py-2 bg-purple-600 rounded-full hover:bg-purple-500 transition-all z-20"
