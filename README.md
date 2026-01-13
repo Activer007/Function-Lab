@@ -1,5 +1,5 @@
 <div align="center">
-  <img width="100%" alt="Function Lab Banner" src="assets/banner.png" />
+  <img width="100%" alt="Function Lab Banner" src="assets/banner.jpeg" />
 </div>
 
 # Function Lab v1.0
