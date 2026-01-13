@@ -91,7 +91,7 @@
 - ✅ **TypeScript 严格模式**: 开启 `strict: true`，修复所有类型错误
 - ✅ **错误边界**: 添加 `ErrorBoundary` 防止应用崩溃
 - ✅ **欢迎页面**: 新增 `WelcomeScreen`，支持首次访问引导和中文界面
-- ✅ **布局修复**: 修复 `read_csv` 和 `columns` 页面垂直居中及遮挡问题
+- ✅ **布局修复**: 全面标准化 `Cleaning`, `Slicing`, `Engineering`, `Logic`, `Training` 板块的布局（统一 `pt-20` 和按钮间距）
 - ✅ **界面重构**: 优化左侧滚动栏和整体 UI/UX，统一 Glassmorphism 风格，提升视觉体验
 
 ---
