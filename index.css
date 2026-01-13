@@ -3,6 +3,41 @@
 @tailwind utilities;
 
 body {
-  background-color: #111827;
+  background-color: #0b0f19;
+  /* Slightly richer dark background */
   color: #f3f4f6;
+  overflow: hidden;
+  /* Prevent body scroll if app handles it */
+}
+
+/* Custom Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.15);
+  /* 提升默认可见度 */
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+  /* hover 时加亮 */
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  /* 匹配 Chrome 样式 */
 }
