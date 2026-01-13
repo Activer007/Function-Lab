@@ -13,13 +13,13 @@ const PORTAL_URL = "https://ai-trainer-porama-system.vercel.app/";
 function App() {
   const [activeFunctionId, setActiveFunctionId] = useState<string>(FUNCTIONS[0].id);
   const [showWelcome, setShowWelcome] = useState(() => {
-    return !localStorage.getItem('hasSeenWelcome');
+    return !sessionStorage.getItem('hasSeenWelcome');
   });
 
   const activeFunc = FUNCTIONS.find(f => f.id === activeFunctionId) || FUNCTIONS[0];
 
   const handleStart = () => {
-    localStorage.setItem('hasSeenWelcome', 'true');
+    sessionStorage.setItem('hasSeenWelcome', 'true');
     setShowWelcome(false);
   };
 
