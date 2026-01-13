@@ -28,3 +28,4 @@ PROMPT-TEMPLATE.md
 .claude/settings.local.json
 check-result.md
 current-status.md
+tmpclaude-*-cwd
