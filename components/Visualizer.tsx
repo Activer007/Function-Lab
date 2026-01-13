@@ -14,13 +14,13 @@ export const Visualizer: React.FC<VisualizerProps> = ({ func }) => {
   return (
     <div className="flex-1 relative overflow-hidden flex flex-col">
       {/* Canvas Header */}
-      <div className="absolute top-6 left-8 z-10 pointer-events-none">
-        <h2 className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-400 opacity-90 tracking-tight">{func.name}</h2>
-        <p className="text-blue-400/80 text-sm font-medium tracking-wide mt-1">{func.description}</p>
+      <div className="absolute top-4 left-4 md:top-6 md:left-8 z-10 pointer-events-none">
+        <h2 className="text-2xl md:text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-400 opacity-90 tracking-tight">{func.name}</h2>
+        <p className="text-blue-400/80 text-xs md:text-sm font-medium tracking-wide mt-1">{func.description}</p>
       </div>
 
       {/* Canvas Area */}
-      <div className="flex-1 relative">
+      <div className="flex-1 relative overflow-y-auto md:overflow-hidden"> {/* Allow scroll on mobile if needed */}
         <div className="absolute inset-0 flex items-center justify-center opacity-[0.03] pointer-events-none">
           {/* Background Grid/Decorations */}
           <div className="w-[800px] h-[800px] border border-white rounded-full"></div>
@@ -29,7 +29,7 @@ export const Visualizer: React.FC<VisualizerProps> = ({ func }) => {
         </div>
 
         {/* Dynamic Content */}
-        <div className="relative z-10 w-full h-full flex items-center justify-center p-8">
+        <div className="relative z-10 w-full h-full flex items-center justify-center p-4 md:p-8 pt-20 md:pt-8 min-h-[400px] md:min-h-0">
           {func.category === 'Cleaning' && <CleaningDemo functionId={func.id} />}
           {func.category === 'Slicing' && <SlicingDemo functionId={func.id} />}
           {func.category === 'Engineering' && <EngineeringDemo functionId={func.id} />}
